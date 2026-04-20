@@ -18,8 +18,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env",env_file_encoding=".utf-8")
 
     # 配置初始化，集中管理
-    llm_api_key: str = ""
-    llm_name:str = "deepseek-chat"
+    model_api_key: str = ""
+    model_name:str = "deepseek-chat"
     workspace_root:str = "."
     command_timeout:int = 30
 

@@ -1,6 +1,6 @@
 from langchain_core.tools import tool
 from pathlib import Path        # python标准库Path类，实现路径操作
-import subprocess               # 运行在沙箱环境
+import subprocess               # 创建一个新进程
 from .config import settings
 
 # 辅助函数，校验路径是否合法，确保安全
