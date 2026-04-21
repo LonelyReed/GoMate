@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     # 配置初始化，集中管理
     model_api_key: str = ""
     model_name:str = "deepseek-chat"
+    model_url: str = ""
     workspace_root:str = "."
     command_timeout:int = 30
 
