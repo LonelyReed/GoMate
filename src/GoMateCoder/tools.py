@@ -9,7 +9,7 @@ def _safe_path(path:str) -> Path:           # 内部函数，被其他函数调�
     full = (Path(settings.workspace_root)/path).resolve()
     root = Path(settings.workspace_root).resolve()
 
-    if not str(full).startswith(str(root)):
+    if not full.is_relative_to(root):
         raise ValueError(f"请求取消：{path}路径访问越界")
     return full
 
