@@ -10,7 +10,9 @@ llm = ChatOpenAI(
     model = settings.model_name,
     api_key=settings.model_api_key,
     base_url=settings.model_url,
-    temperature=0
+    temperature=0,
+    reasoning_effort="high",                                    # 思考强度开关
+    extra_body={"thinking": {"type": "enabled"}}                # 思考模式开关
 ).bind_tools(TOOLS)
 
 # 定义智能体节点
