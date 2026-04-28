@@ -33,15 +33,53 @@ def main(task):
         if hasattr(last_message,"content"):
             console.print(Markdown(last_message.content))
 
-        else:
-            # 交互式模式
-            console.print(Panel.fit("[bold green]GoMateCoder[/]成功启动",border_style="green"))
-            console.print("输入你的需求以及任务,[bold yellow]/exit[/] 退出\n")
+    else:
+        # 交互式模式
+        console.print(Panel.fit("[bold green]GoMateCoder[/]成功启动",border_style="green"))
+        console.print("输入你的需求以及任务,[bold yellow]/exit[/] 退出\n")
 
-            # 历史消息，注入系统提示词
-            messages = [SystemMessage(content=SYSTEM_PROMPT)]
+        # 历史消息，注入系统提示词
+        messages = [SystemMessage(content=SYSTEM_PROMPT)]
 
-            # 交互循环
-            while True:
-                # 用户输入
+        # 交互循环
+        while True:
+            # 用户输入
+            user_input = click.prompt("你",prompt_suffix="> ",type=str)                # 退出循环
+            if user_input.strip() == "/exit":
+                console.print("[bold red]成功退出GoMateCoder[/]")
+                break
+
+            # 将对话添加到历史
+            messages.append(HumanMessage(content=user_input))
                 
+            # 流式输出回复，借助Live动态更新
+            # 后续考虑采用io效率更高的异步处理
+            with Live(refresh_per_second=4) as live:
+                # 存储最终状态
+                final_state = None
+                # 流式输出图执行过程中的每个节点的输出
+                for chunk in graph.stream({"messages":messages}):
+                    # chunk是一个字典，其中key是节点名，value是该节点返回的状态更新
+                    for node_name,state_update in chunk.items():
+                        if "messages" in state_update:
+                            # 获取最新的一条消息，可能来自于llm，或者是调用tool的输出
+                            last_msg = state_update["messages"][-1]
+                            if hasattr(last_msg,"content") and last_msg.content:
+                                # 实时更新显示区
+                                live.update(Markdown(last_msg.content))
+                    # 记录最后的完整状态
+                    final_state = state_update
+
+                # 流式输出的循环结束后，将最终状态包含的消息合并到历史
+                # 注意：graph.stream中，最后的状态包含了所有的新增信息
+                if final_state and "messages" in final_state:
+                    # 新消息是final_state["messages"]中哪些原先不在messages中的信息
+                    # 这里偷懒，将messages直接更新为final_state
+                    messages = final_state["messages"]
+
+            # 进入下一轮对话
+            console.print()
+
+# 主函数，启动整个GoMateCoder
+if __name__ == "__main__":
+    main()
