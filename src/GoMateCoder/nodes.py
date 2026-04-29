@@ -18,10 +18,7 @@ llm = ChatOpenAI(
 # 定义智能体节点
 def agent_node(state:AgentState):
     """LLM决策节点：自主决定调用什么工具或者选择直接回答"""
-    response = llm.invoke(
-        [SystemMessage(content=SYSTEM_PROMPT)]
-        + state['messages']
-    )
+    response = llm.invoke(state['messages'])
 
     return {"messages":[response]}
 
