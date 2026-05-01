@@ -11,9 +11,10 @@ llm = ChatDeepSeek(
     api_key=settings.model_api_key,
     base_url=settings.model_url,
     temperature=0,
-    reasoning_effort="high",                                    # 思考强度开关
-    extra_body={"thinking": {"type": "enabled"}}                # 思考模式开关
-   
+    reasoning_effort="max",                         # 设置思考强度
+    extra_body={
+        "thinking":{"type":"enabled"}               # 开启思考模式
+    }
 ).bind_tools(TOOLS)
 
 # 定义智能体节点
