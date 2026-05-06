@@ -15,7 +15,7 @@ from pydantic_settings import BaseSettings,SettingsConfigDict
 
 class Settings(BaseSettings):
     # 从环境变量加载配置
-    model_config = SettingsConfigDict(env_file=".env",env_file_encoding=".utf-8")
+    model_config = SettingsConfigDict(env_file=".env",env_file_encoding="utf-8")
 
     # 配置初始化，集中管理
     model_api_key: str = ""
