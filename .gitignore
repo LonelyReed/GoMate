@@ -32,6 +32,10 @@ ENV/
 .coverage
 htmlcov/
 
+# 测试文件
+test.txt
+test.py
+
 # 日志
 *.log
 logs/
