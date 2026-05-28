@@ -55,6 +55,7 @@ client = OpenAI(
 )
 
 # TAOR循环
+MAX_ITERATION = 10             # 最大循环次数
 def agent_loop(user_message:str):
     messages=[
                 {"role":"system","content":"你是一个有用的助手，语言风格幽默风趣"},
@@ -62,7 +63,10 @@ def agent_loop(user_message:str):
             ]
 
     # 循环
-    while True:
+    iteration = 0              # 当前循环次数
+    while iteration < MAX_ITERATION:
+
+        iteration += 1
 
         response = client.chat.completions.create(
             model=os.getenv("MODEL_NAME","deepseek-v4-flash"),
@@ -93,6 +97,8 @@ def agent_loop(user_message:str):
                 "tool_call_id":tool_call.id,
                 "content":result,
             })
+
+    return f"The maximum number of cycles has been reached\nfinal result:\n{assistant_msg.content if assistant_msg else 'None'}"
 
 def main():
     print("###GoMate-owl###")
