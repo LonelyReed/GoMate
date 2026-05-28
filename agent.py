@@ -88,11 +88,11 @@ def agent_loop(user_message:str):
             else:
                 result = "Unknown tool"
         
-        messages.append({
-            "role":"tool",
-            "tool_call_id":tool_call.id,
-            "content":result,
-        })
+            messages.append({
+                "role":"tool",
+                "tool_call_id":tool_call.id,
+                "content":result,
+            })
 
 def main():
     print("###GoMate-owl###")
