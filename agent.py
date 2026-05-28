@@ -35,7 +35,12 @@ def execute_shell(command:str) -> str:
     
     try:
         result = subprocess.run(
-            command,shell=True,capture_output=True,text=True,timeout=30
+            command,
+            shell=True,
+            capture_output=True,
+            encoding="utf-8",               # 使用utf-8解码
+            errors="replace",               # 遇到无法解码的字符用其他字符替代
+            timeout=30
         )
         return result.stdout + result.stderr
       
