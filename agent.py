@@ -27,12 +27,18 @@ tools = [
 # 定义工具
 def execute_shell(command:str) -> str:
     """Execute a shell command and return stdout + stderr."""
+   
+    # 命令请求
+    confirm = input(f"#{command}# Whether to execute[y/n]: ")
+    if confirm.lower() not in ['y','Y']:
+        return "The user rejected the command execution request"
+    
     try:
         result = subprocess.run(
             command,shell=True,capture_output=True,text=True,timeout=30
         )
         return result.stdout + result.stderr
-    
+      
     except Exception as e:
         return f"Error executing command:{str(e)}"
 
